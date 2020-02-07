@@ -1,0 +1,6 @@
+export(GraphChroms)
+export(AnalyzeBlastR)
+export(BlastN)
+export(InfHom)
+importFrom(Rcpp, sourceCpp)
+useDynLib(chromPaintR)
