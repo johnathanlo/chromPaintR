@@ -7,7 +7,7 @@ Takes a fasta file and turns it into a BLAST database.
 Takes a fasta file and turns it into a BLAST database.
 }
 \usage{
-FindXmers(dbtype = "nucl", fsa_file)
+MakeDB(dbtype = "nucl", fsa_file)
 }
 \arguments{
   \item{dbtype}{The type of database to create. Currently only nucleotide databases are supported.

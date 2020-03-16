@@ -3,9 +3,8 @@ GraphChroms <- function(chromdat,
                         dbchrom.lim = T,
                         sample = 1,
                         max.scaffs = 10,
-                        max.dbchroms = 10){
+                        max.dbchroms = 10){###have user input colors
   require(ggplot2);require(ggpubr);require(RColorBrewer);require(dplyr)
-  source("R.scripts/fancy_scientific.r")
   alldbhits <- Reduce(c, chromdat$summary$`Database hits`)
   allscaffpos <- Reduce(c, chromdat$summary$`Locations on query scaffold`)
   alldbpos <- Reduce(c, chromdat$summary$`Locations on database`)
@@ -55,7 +54,8 @@ GraphChroms <- function(chromdat,
     scale_x_continuous(name = "Chromosomes", breaks = 1:max.dbchroms, labels = levels(factor(graph_dbchroms$chromosomes)))+
     scale_y_continuous(name = "Length", labels = fancy_scientific)+
     colorScale +
-    coord_flip()
+    coord_flip()+
+    guides(colour = guide_legend(override.aes = list(size = 10)))
 
   chromplot2 <- ggplot(data = graph_scaffs, aes(x=scaffolds_num, y = positions, color = chromosomes)) +
     geom_rect(data = graph_scaffs, aes(xmin = scaffolds_num-.1, xmax = scaffolds_num+.1, ymin = 0, ymax = scafflengths, fill = I("white")), color = NA)+
