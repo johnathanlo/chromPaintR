@@ -4,7 +4,7 @@ library(Rcpp)
 BlastN <- function(query, db, slicesize=100, leaps=900){
   if (file.exists(query) && file.exists(db)&&slicesize>10){
   x <- FastaSlice(query, db, slicesize, leaps)
-  }else if(!file.exists(query) || !file.exists(db) {
+  }else if(!file.exists(query) || !file.exists(db)) {
     print("File does not exist. ")
   }else{
     print("Slicesize must be greater than 10")
