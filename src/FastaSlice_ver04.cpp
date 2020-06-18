@@ -115,7 +115,7 @@ int FastaSlice(std::string query, std::string target, int slicesize, int leaps) 
     qchrom_lengths.push_back(seq_pos);
 
     sprintf(command,
-            "blastn -db %s -query query_v02.fsa  -outfmt "6 qseqid sstart sseqid length pident score evalue" -max_target_seqs 1 -out results_v03.out",
+            "blastn -db %s -query query_v02.fsa  -outfmt \"6 qseqid sstart sseqid length pident score evalue\" -max_target_seqs 1 -out results_v03.out",
             target_database);
     success = system(command);
 
