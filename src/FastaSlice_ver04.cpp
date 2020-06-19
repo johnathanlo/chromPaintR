@@ -119,7 +119,7 @@ int FastaSlice(std::string query, std::string target, int slicesize, int leaps) 
             target_database);
     success = system(command);
 
-    printf("\nBaking");
+    /*printf("\nBaking");
     results_ptr = fopen("results_v03.out", "r+");
     newline = 1;
     line_num = 0;
@@ -136,7 +136,7 @@ int FastaSlice(std::string query, std::string target, int slicesize, int leaps) 
                 printf(".");
         }
     }
-    fclose(results_ptr);
+    fclose(results_ptr);*/
     fclose(query_ptr);
 
     //pt 2
