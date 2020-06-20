@@ -1,5 +1,5 @@
 library(Rcpp)
-#sourceCpp("src/FastaSlice_ver04.cpp")
+sourceCpp("FastaSlice_ver04.cpp")
 
 BlastN <- function(query, db, slicesize=100, leaps=900){
   if (file.exists(query) && file.exists(db)&&slicesize>10){

@@ -23,13 +23,13 @@ int FastaSlice(std::string query, std::string target, int slicesize, int leaps) 
     FILE *query_ptr, *queryout_ptr, *results_ptr, *db_ptr, *chrom_ptr;
     time_t begin = time(NULL);
 
-    query_ptr = fopen(query_genome, "r");
-    queryout_ptr = fopen("query_v02.fsa", "w");
+    query_ptr = fopen(query_genome, "rb");
+    queryout_ptr = fopen("query_v02.fsa", "wb");
     fclose(queryout_ptr);
-    results_ptr = fopen("results_v03.out", "w");
+    results_ptr = fopen("results_v03.out", "wb");
     fclose(results_ptr);
 
-    printf("Shaking");
+    Rcout<<"Shaking";
 
     while ((ch = getc(query_ptr)) != EOF)//loop through the fasta file
     {
@@ -56,6 +56,7 @@ int FastaSlice(std::string query, std::string target, int slicesize, int leaps) 
                     seq_id_flag = 0;//remove flags
                     seq_id[seq_id_len] = '\0';
                     line_num++;
+                    Rcout<<endl;
                     q_seq_names.push_back(seq_id);
                 }
             }
@@ -109,38 +110,39 @@ int FastaSlice(std::string query, std::string target, int slicesize, int leaps) 
         seq_str_len = 0;
         unk = 0;
         if (!(line_num % 1000))
-            printf(".");
+            Rcout<<".";
     }
 
     qchrom_lengths.push_back(seq_pos);
-
+    fclose(query_ptr);
     sprintf(command,
             "blastn -db %s -query query_v02.fsa  -outfmt \"6 qseqid sstart sseqid length pident score evalue\" -max_target_seqs 1 -out results_v03.out",
             target_database);
     success = system(command);
 
-    /*printf("\nBaking");
-    results_ptr = fopen("results_v03.out", "r+");
+    Rcout<<endl<<"Baking";
+    results_ptr = fopen("results_v03.out", "rb+");
     newline = 1;
     line_num = 0;
     while ((ch = getc(results_ptr)) != EOF) {
         if (newline && ch == '_') {
             fseek(results_ptr, -1, SEEK_CUR);
             fprintf(results_ptr, "\t");
+            fflush(results_ptr);
             newline = 0;
         }
         if (ch == '\n') {
             newline = 1;
             line_num++;
             if (!(line_num % 500))
-                printf(".");
+                Rcout<<".";
         }
     }
-    fclose(results_ptr);*/
-    fclose(query_ptr);
+    fclose(results_ptr);
+
 
     //pt 2
-    db_ptr = fopen(target_database, "r");
+    db_ptr = fopen(target_database, "rb");
     seq_pos = 0;
     while ((ch = getc(db_ptr)) != EOF) {
         if (ch == '>')//detect beginning of sequence name
@@ -158,7 +160,7 @@ int FastaSlice(std::string query, std::string target, int slicesize, int leaps) 
     dbchrom_lengths.push_back(seq_pos);
     fclose(db_ptr);
 
-    chrom_ptr = fopen("chromlength.out", "w");
+    chrom_ptr = fopen("chromlength.out", "wb");
 
     for (i = 0; i < qchrom_lengths.size(); i++) {
         fprintf(chrom_ptr, "%s\t", q_seq_names[i].c_str());
@@ -180,6 +182,6 @@ int FastaSlice(std::string query, std::string target, int slicesize, int leaps) 
 
     time_t end = time(NULL);
     double time_spent = (double) (end - begin) / 60;
-    printf("\nComplete!\nTime: %lf mins", time_spent);
+    Rcout<<endl<<"Complete!"<<endl<<"Time: "<< time_spent<<" mins"<<endl;
     return 0;
 }
