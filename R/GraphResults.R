@@ -21,7 +21,7 @@ GraphChroms <- function(chromdat,
     graph_scaffs<-graph_scaffs[graph_scaffs$chromosomes %in% ordered.chroms[1:max.dbchroms],]
   }
   if(scaff.lim){
-    largest.scaffs <- chromdat$lengthdata[[1]][order(as.numeric(chromdat$lengthdat[[2]]), decreasing = T)[1:max.scaffs]]
+    largest.scaffs <- chromdat$lengthdata[[1]][order(as.numeric(chromdat$lengthdata[[2]]), decreasing = T)[1:max.scaffs]]
     graph_scaffs <- graph_scaffs[graph_scaffs$scaffolds %in% largest.scaffs,]
   }
   graph_scaffs$chromosomes_num <-as.numeric(factor(graph_scaffs$chromosomes))
@@ -34,7 +34,7 @@ GraphChroms <- function(chromdat,
 
 
   dbchrom_locarray <- Reduce(c,mapply(seq, from = 0, to = as.numeric(chromdat$lengthdata[[3]][1:max.dbchroms]), by=10000))
-  dbchrom_namearray <- Reduce(c,mapply(rep, chromdat$lengthdata[[4]][1:10], each = ceiling(as.numeric(chromdat$lengthdata[[3]][1:max.dbchroms])/10000)))
+  dbchrom_namearray <- Reduce(c,mapply(rep, chromdat$lengthdata[[4]][1:max.dbchroms], each = ceiling(as.numeric(chromdat$lengthdata[[3]][1:max.dbchroms])/10000)))
   graph_dbchroms <- data.frame(chromosomes = dbchrom_namearray, positions = dbchrom_locarray)
   graph_dbchroms$chromosomes_num <- as.numeric(factor(graph_dbchroms$chromosomes))
 
@@ -55,7 +55,7 @@ GraphChroms <- function(chromdat,
     scale_y_continuous(name = "Length", labels = fancy_scientific)+
     colorScale +
     coord_flip()+
-    guides(colour = guide_legend(override.aes = list(size = 10)))
+    guides(colour = guide_legend(override.aes = list(size = max.dbchroms)))
 
   chromplot2 <- ggplot(data = graph_scaffs, aes(x=scaffolds_num, y = positions, color = chromosomes)) +
     geom_rect(data = graph_scaffs, aes(xmin = scaffolds_num-.1, xmax = scaffolds_num+.1, ymin = 0, ymax = scafflengths, fill = I("white")), color = NA)+
