@@ -98,7 +98,7 @@ int FastaSlice(std::string query, std::string target, int slicesize, int leaps) 
 
             seq_str[seq_str_len] = '\0';
 
-            if (unk < slicesize / 2 && strlen(seq_str) > 60)
+            if (unk < slicesize / 2 && strlen(seq_str) > slicesize/2)
             {
                 queryout_ptr = fopen("query_v02.fsa", "a");
                 fprintf(queryout_ptr, ">%li_%s\n", seq_pos, seq_id);
