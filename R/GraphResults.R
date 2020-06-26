@@ -41,8 +41,11 @@ GraphChroms <- function(chromdat,
   if(sample < 1){
     graph_scaffs <- sample_frac(graph_scaffs, size = sample)
   }
-
-  colors <- brewer.pal(max.dbchroms, "Paired")
+  
+  qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
+  col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
+  colors <- sample(max.dbchroms, col_vector)
+  #colors <- brewer.pal(max.dbchroms, "Paired")
   names(colors) <- levels(graph_dbchroms$Chromosomes)
   colorScale <- scale_color_manual(name = "Chromosomes", values = colors)
   if(length(unique(graph_scaffs$scaffolds))<max.scaffs){
